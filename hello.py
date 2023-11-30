@@ -3,9 +3,10 @@ from maze import start, finish
 from scroll import *
 
 
-
 root.title("A* Maze Runner")
-
+# Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
+image = PhotoImage(file='maze.png')
+root.iconphoto(False, image)
 
 def enter():
     for label in fTable.grid_slaves():
