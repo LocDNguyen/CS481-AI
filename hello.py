@@ -72,4 +72,7 @@ clear_arguments.grid(row=3, column=1)
 # Allow keyboard enter key to create maze
 root.bind('<Return>',lambda event:enter())
 
+# Center the application window
+root.eval('tk::PlaceWindow . center')
+
 root.mainloop()
