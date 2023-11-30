@@ -12,7 +12,7 @@ def enter():
     for label in root.grid_slaves():
         if int(label.grid_info()["row"]) > 3:
             label.grid_forget()
-            
+
     rows = int(num_of_rows.get())
     cols = int(num_of_cols.get())
     wall = float(wall_prob.get())
@@ -68,5 +68,8 @@ pass_arguments.grid(row=3, column=0, pady=10)
 
 clear_arguments = Button(root, text="Clear", command=clear, width=10, padx=5, pady=1)
 clear_arguments.grid(row=3, column=1)
+
+# Allow keyboard enter key to create maze
+root.bind('<Return>',lambda event:enter())
 
 root.mainloop()
