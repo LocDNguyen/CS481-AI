@@ -9,11 +9,11 @@ def generate_maze(rows, cols, wall_prob):
     for row in range(rows):
         for col in range(cols):
             if row == 0 or row == rows - 1:
-                maze[row][col] = '-'  # Top and Bottom border of maze
+                maze[row][col] = '─'  # Top and Bottom border of maze
             if (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
                 maze[row][col] = '|'  # Side border of maze
             if row != 0 and col != 0 and row != rows - 1 and col != cols-1 and random.random() < wall_prob:
-                maze[row][col] = 1    # Obstacles
+                maze[row][col] = '█'    # █ Represents obstacles
     return maze
 
 def print_maze(maze):
@@ -41,7 +41,7 @@ def astar(maze, start, goal):
         for neighbor in get_neighbors(current_node, rows, cols):
             tentative_g_score = g_score[current_node] + 1
 
-            if 0 <= neighbor[0] < rows and 0 <= neighbor[1] < cols and maze[neighbor[0]][neighbor[1]] != 1:
+            if 0 <= neighbor[0] < rows and 0 <= neighbor[1] < cols and maze[neighbor[0]][neighbor[1]] != '█' and maze[neighbor[0]][neighbor[1]] != '─' and maze[neighbor[0]][neighbor[1]] != '|':
                 if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
                     g_score[neighbor] = tentative_g_score
                     f_score = tentative_g_score + heuristic(neighbor, goal)
@@ -81,7 +81,7 @@ def finish(rows, cols, maze):
     if path:
         print("\nShortest Path:")
         for row, col in path:
-            maze[row][col] = 2  # 2 represents the path
+            maze[row][col] = '+'  # + represents the path
         print_maze(maze)
         return maze
     else:
