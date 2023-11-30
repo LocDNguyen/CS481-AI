@@ -13,7 +13,7 @@ def generate_maze(rows, cols, wall_prob):
             if (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
                 maze[row][col] = '|'  # Side border of maze
             if row != 0 and col != 0 and row != rows - 1 and col != cols-1 and random.random() < wall_prob:
-                maze[row][col] = '█'    # █ Represents obstacles
+                maze[row][col] = '1'    # █ Represents obstacles
     return maze
 
 def print_maze(maze):
@@ -41,7 +41,7 @@ def astar(maze, start, goal):
         for neighbor in get_neighbors(current_node, rows, cols):
             tentative_g_score = g_score[current_node] + 1
 
-            if 0 <= neighbor[0] < rows and 0 <= neighbor[1] < cols and maze[neighbor[0]][neighbor[1]] != '█' and maze[neighbor[0]][neighbor[1]] != '─' and maze[neighbor[0]][neighbor[1]] != '|':
+            if 0 <= neighbor[0] < rows and 0 <= neighbor[1] < cols and maze[neighbor[0]][neighbor[1]] != '1' and maze[neighbor[0]][neighbor[1]] != '─' and maze[neighbor[0]][neighbor[1]] != '|':
                 if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
                     g_score[neighbor] = tentative_g_score
                     f_score = tentative_g_score + heuristic(neighbor, goal)
