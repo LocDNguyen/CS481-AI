@@ -3,7 +3,7 @@ from maze import start, finish
 
 # Has to happen before anything else
 root = Tk()
-root.title("TBD")
+root.title("A* Maze Runner")
 #root.geometry("400x400")
 
 
