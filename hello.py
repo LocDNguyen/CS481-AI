@@ -9,6 +9,10 @@ root.title("TBD")
 
 # Display maze
 def enter():
+    for label in root.grid_slaves():
+        if int(label.grid_info()["row"]) > 3:
+            label.grid_forget()
+            
     rows = int(num_of_rows.get())
     cols = int(num_of_cols.get())
     wall = float(wall_prob.get())
