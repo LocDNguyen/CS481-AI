@@ -7,6 +7,7 @@ root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
 image = PhotoImage(file='maze.png')
 root.iconphoto(False, image)
+root.geometry("500x500+200+100")
 
 def enter():
     for label in fTable.grid_slaves():
@@ -43,15 +44,48 @@ def clear():
     for label in fTable.grid_slaves():
         if int(label.grid_info()["row"]) > 3:
             label.grid_forget()
+    
+    num_of_rows.insert(0, "Ex: 5, 10, 20")
+    num_of_cols.insert(0, "Ex: 5, 10, 20")
+    wall_prob.insert(0, "Ex: .1, .2, .3")
+
+    root.bind("<1>", lambda event: event.widget.focus_set())
+
+def remove_row_text():
+    if num_of_rows.get() != "":
+        num_of_rows.delete(0, END)
+
+def remove_col_text():
+    if num_of_cols.get() != "":
+        num_of_cols.delete(0, END)
+
+def remove_wall_text():
+    if wall_prob.get() != "":
+        wall_prob.delete(0, END)
+
+def add_row_text():
+    if num_of_rows.get() == "":
+        num_of_rows.insert(0, "Ex: 5, 10, 20")
+
+def add_col_text():
+    if num_of_cols.get() == "":
+        num_of_cols.insert(0, "Ex: 5, 10, 20")
+
+def add_wall_text():
+    if wall_prob.get() == "":
+        wall_prob.insert(0, "Ex: .1, .2, .3")
 
 
 # Create text boxes
-num_of_rows = Entry(fTable, width=20)
+num_of_rows = Entry(fTable, width=26)
 num_of_rows.grid(row=0, column=1, padx=20)
-num_of_cols = Entry(fTable, width=20)
+num_of_rows.insert(0, "Ex: 5, 10, 20")
+num_of_cols = Entry(fTable, width=26)
 num_of_cols.grid(row=1, column=1, padx=20)
-wall_prob = Entry(fTable, width=20)
+num_of_cols.insert(0, "Ex: 5, 10, 20")
+wall_prob = Entry(fTable, width=26)
 wall_prob.grid(row=2, column=1, padx=20)
+wall_prob.insert(0, "Ex: .1, .2, .3")
 
 # Create text box labels
 rows_label = Label(fTable, text="Number of Rows:").grid(row=0, column=0, padx=20, pady=5)
@@ -64,7 +98,17 @@ pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=5, p
 clear_arguments = Button(fTable, text="Clear", command=clear, width=10, padx=5, pady=1).grid(row=3, column=1)
 
 # Allow keyboard enter key to create maze
-root.bind('<Return>',lambda event:enter())
+root.bind('<Return>', lambda event:enter())
 
+# Entry box descriptions
+num_of_rows.bind("<FocusIn>", lambda event:remove_row_text())
+num_of_rows.bind("<FocusOut>", lambda event:add_row_text())
+num_of_cols.bind("<FocusIn>", lambda event:remove_col_text())
+num_of_cols.bind("<FocusOut>", lambda event:add_col_text())
+wall_prob.bind("<FocusIn>", lambda event:remove_wall_text())
+wall_prob.bind("<FocusOut>", lambda event:add_wall_text())
+
+# If user clicks on an empty space, the insert cursor will disappear from the entry box
+root.bind("<1>", lambda event: event.widget.focus_set())
 
 root.mainloop()
