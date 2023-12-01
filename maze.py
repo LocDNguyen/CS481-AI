@@ -62,7 +62,6 @@ def reconstruct_path(came_from, current):
     return path
 
 def start(rows, cols, wall_probability):
-    import random
 
     #rows, cols = 20, 20
     #wall_probability = .3
