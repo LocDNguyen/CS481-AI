@@ -24,14 +24,14 @@ def enter():
     r = 8
 
     # Display initial maze
-    begin = start(rows, cols, wall)
+    begin = start(rows, cols, wall, start_x, start_y, end_x, end_y)
     Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=7)
     for row in begin:
         Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
         updateScrollRegion()
 
     # Display A* maze
-    final = finish(rows, cols, begin)
+    final = finish(begin, start_x, start_y, end_x, end_y)
     if final == "None":
         Label(fTable, text="No valid path found.").grid(row=7, column=1)
     else:

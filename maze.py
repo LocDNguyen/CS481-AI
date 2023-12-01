@@ -4,7 +4,7 @@
 import heapq
 import random
 
-def generate_maze(rows, cols, wall_prob):
+def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
     maze = [[0] * cols for _ in range(rows)]
     for row in range(rows):
         for col in range(cols):
@@ -14,6 +14,8 @@ def generate_maze(rows, cols, wall_prob):
                 maze[row][col] = '|'  # Side border of maze
             if row != 0 and col != 0 and row != rows - 1 and col != cols-1 and random.random() < wall_prob:
                 maze[row][col] = '1'    # █ Represents obstacles
+    maze[start_x][start_y] = 0
+    maze[end_x][end_y] = 0
     return maze
 
 def print_maze(maze):
@@ -61,20 +63,20 @@ def reconstruct_path(came_from, current):
         path.insert(0, current)
     return path
 
-def start(rows, cols, wall_probability):
+def start(rows, cols, wall_probability, start_x, start_y, end_x, end_y):
 
     #rows, cols = 20, 20
     #wall_probability = .3
 
-    maze = generate_maze(rows, cols, wall_probability)
+    maze = generate_maze(rows, cols, wall_probability, start_x, start_y, end_x, end_y)
     print("Generated Maze:")
     print_maze(maze)
 
     return maze
 
-def finish(rows, cols, maze):
-    start = (1, 1)
-    goal = (rows - 2, cols - 2)
+def finish(maze, start_x, start_y, end_x, end_y):
+    start = (start_x, start_y)
+    goal = (end_x, end_y)
     path = astar(maze, start, goal)
 
     if path:
