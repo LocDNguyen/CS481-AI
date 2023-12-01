@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from maze import start, finish
 from scroll import *
 
@@ -21,6 +22,16 @@ def enter():
     start_y = int(start_coord_two.get())
     end_x = int(end_coord.get())
     end_y = int(end_coord_two.get())
+    if start_x < 1 or start_x > rows-2 or start_y < 1 or start_y > cols-2:
+        messagebox.showerror('???', 'Error: Invalid Start Coordinate!')
+        start_coord.delete(0, END)
+        start_coord_two.delete(0, END)
+        return
+    if end_x < 1 or end_x > rows-2 or end_y < 1 or end_y > cols-2:
+        messagebox.showerror('???', 'Error: Invalid End Coordinate!')
+        end_coord.delete(0, END)
+        end_coord_two.delete(0, END)
+        return
     r = 8
 
     # Display initial maze
