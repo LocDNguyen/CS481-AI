@@ -26,11 +26,15 @@ def enter():
         messagebox.showerror('???', 'Error: Invalid Start Coordinate!')
         start_coord.delete(0, END)
         start_coord_two.delete(0, END)
+        start_coord.insert(0, "Ex: 1")
+        start_coord_two.insert(0, "Ex: 1")
         return
     if end_x < 1 or end_x > rows-2 or end_y < 1 or end_y > cols-2:
         messagebox.showerror('???', 'Error: Invalid End Coordinate!')
         end_coord.delete(0, END)
         end_coord_two.delete(0, END)
+        end_coord.insert(0, "Ex: 8")
+        end_coord_two.insert(0, "Ex: 8")
         return
     r = 8
 
@@ -69,8 +73,8 @@ def clear():
     num_of_cols.insert(0, "Ex: 5, 10, 20")
     wall_prob.insert(0, "Ex: .1, .2, .3")
     start_coord.insert(0, "Ex: 1")
-    start_coord_two.insert(0, "Ex: 2")
-    end_coord.insert(0, "Ex: 4")
+    start_coord_two.insert(0, "Ex: 1")
+    end_coord.insert(0, "Ex: 8")
     end_coord_two.insert(0, "Ex: 8")
 
     root.bind("<1>", lambda event: event.widget.focus_set())
@@ -121,11 +125,11 @@ def add_start_text():
 
 def add_start_two_text():
     if start_coord_two.get() == "":
-        start_coord_two.insert(0, "Ex: 2")
+        start_coord_two.insert(0, "Ex: 1")
 
 def add_end_text():
     if end_coord.get() == "":
-        end_coord.insert(0, "Ex: 4")
+        end_coord.insert(0, "Ex: 8")
 
 def add_end_two_text():
     if end_coord_two.get() == "":
@@ -148,11 +152,11 @@ start_coord.grid(row=3, column=1, padx=20, sticky=W)
 start_coord.insert(0, "Ex: 1")
 start_coord_two = Entry(fTable, width=5)
 start_coord_two.grid(row=3, column=1, padx=20, sticky=E)
-start_coord_two.insert(0, "Ex: 2")
+start_coord_two.insert(0, "Ex: 1")
 
 end_coord = Entry(fTable, width=5)
 end_coord.grid(row=4, column=1, padx=20, sticky=W)
-end_coord.insert(0, "Ex: 4")
+end_coord.insert(0, "Ex: 8")
 end_coord_two = Entry(fTable, width=5)
 end_coord_two.grid(row=4, column=1, padx=20, sticky=E)
 end_coord_two.insert(0, "Ex: 8")
