@@ -1,3 +1,7 @@
+# USES maze FILE #
+# USES maze FILE #
+# USES maze FILE #
+
 from tkinter import *
 from tkinter import messagebox
 from maze import start, finish
