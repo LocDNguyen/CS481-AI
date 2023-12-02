@@ -104,7 +104,7 @@ def astar_pathfind_gen(maze, start, goal):
         print("frontier:", end=" ")
         print(open_set)
             
-    print("\nNo valid path found.")
+    # print("\nNo valid path found.")
     return None  # No path found
 
 
@@ -158,9 +158,12 @@ def finish(maze, start_x, start_y, end_x, end_y):
     print()
 
     for i in range(len(astar_path)):
-        # x='A'
-        # val=chr(ord(x) + i)
-        maze[astar_path[i][0]][astar_path[i][1]] = '+'
+        x='A'
+        if i <= 25:
+            val=chr(ord(x) + i)
+        else:
+            x = 'A'
+        maze[astar_path[i][0]][astar_path[i][1]] = val
 
     # print("A is the start position, " + chr(ord('A') + len(astar_path) - 1) + " is the goal position")
     print_maze(maze)

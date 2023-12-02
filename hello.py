@@ -16,7 +16,7 @@ root.geometry("400x500+200+100")
 
 def enter():
     for label in fTable.grid_slaves():
-        if int(label.grid_info()["row"]) > 6:
+        if int(label.grid_info()["row"]) > 7:
             label.grid_forget()
 
     rows = int(num_of_rows.get())
@@ -40,25 +40,26 @@ def enter():
         end_coord.insert(0, "Ex: 8")
         end_coord_two.insert(0, "Ex: 8")
         return
-    r = 8
 
     # Display initial maze
     begin = start(rows, cols, wall, start_x, start_y, end_x, end_y)
-    Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=7)
+    Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in begin:
         Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
         updateScrollRegion()
 
     # Display A* maze
     final = finish(begin, start_x, start_y, end_x, end_y)
+    r = 9
     if final == "None":
-        Label(fTable, text="No valid path found.").grid(row=7, column=1)
+        Label(fTable, text="No valid path found.").grid(row=8, column=1)
     else:
-        Label(fTable, text="Shortest Path:").grid(pady=2, row=7, column=1)
+        Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
         for row in final:
-            Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
-            r += 1
-            updateScrollRegion()
+            for i in row:
+                Label(fTable, text=" ".join(map(str,i)), borderwidth=1).grid(pady=2, row=r, column=1)
+                r += 1
+                updateScrollRegion()
 
 
 def clear():
@@ -70,7 +71,7 @@ def clear():
     end_coord.delete(0, END)
     end_coord_two.delete(0, END)
     for label in fTable.grid_slaves():
-        if int(label.grid_info()["row"]) > 6:
+        if int(label.grid_info()["row"]) > 7:
             label.grid_forget()
     
     num_of_rows.insert(0, "Ex: 5, 10, 20")
@@ -184,6 +185,9 @@ close_parenth_label = Label(fTable, text=")").grid(row=4, column=2, sticky=W)
 pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=5, pady=1).grid(row=6, column=0, pady=10)
 
 clear_arguments = Button(fTable, text="Clear", command=clear, width=10, padx=5, pady=1).grid(row=6, column=1)
+
+test_button_right = Button(fTable, text=">", width=5, padx=5, pady=1).grid(row=7, column=1)
+test_button_left = Button(fTable, text="<", width=5, padx=5, pady=1).grid(row=7, column=0)
 
 # Allow keyboard enter key to create maze
 root.bind('<Return>', lambda event:enter())

@@ -78,13 +78,26 @@ def finish(maze, start_x, start_y, end_x, end_y):
     start = (start_x, start_y)
     goal = (end_x, end_y)
     path = astar(maze, start, goal)
+    while True:
+        if path:
+            print("\nShortest Path:")
+            for row, col in path:
+                yield maze
+                maze[row][col] = '+'  # + represents the path
+            # print_maze(maze)
+            # return maze
+            break
+        else:
+            print("\nNo valid path found.")
+            return "None"
+    
 
-    if path:
-        print("\nShortest Path:")
-        for row, col in path:
-            maze[row][col] = '+'  # + represents the path
-        print_maze(maze)
-        return maze
-    else:
-        print("\nNo valid path found.")
-        return "None"
+# def main():
+#     maze = start(10, 20, .1, 1, 1, 8, 8)
+#     maze2 = finish(maze, 1, 1, 8, 8)
+#     for i in maze2:
+#         print_maze(i)
+
+
+# if __name__ == "__main__":
+#     main()
