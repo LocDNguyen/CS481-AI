@@ -18,7 +18,7 @@ root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
 image = PhotoImage(file='maze.png')
 root.iconphoto(False, image)
-root.geometry("400x500+200+100")
+root.geometry("500x500+200+100")
 
 def enter():
     for label in fTable.grid_slaves():
@@ -202,6 +202,9 @@ def step_display():
         r += 1
         updateScrollRegion()
 
+    if not astar_path:
+        first_run = True
+
 
 def remove_row_text():
     if num_of_rows.get() != "":
@@ -305,7 +308,7 @@ pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=5, p
 
 clear_arguments = Button(fTable, text="Clear", command=clear, width=10, padx=5, pady=1).grid(row=6, column=1)
 
-step_display = Button(fTable, text="Generate Step", command=step_display, width=10, padx=5, pady=1).grid(row=6, column=2, pady=10)
+generate_steps = Button(fTable, text="Generate Step", command=step_display, width=10, padx=5, pady=1).grid(row=6, column=2, pady=10, padx=50)
 
 # Allow keyboard enter key to create maze
 root.bind('<Return>', lambda event:enter())
