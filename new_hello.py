@@ -2,11 +2,17 @@
 # USES Astar_gen FILE #
 # USES Astar_gen FILE #
 
+import ast
 from tkinter import *
 from tkinter import messagebox
 from scroll import *
 from Astar_gen import *
 
+saved_path_generator = None
+first_run = True
+astar_path = None
+astar_travelled_path = None
+maze = None
 
 root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
@@ -59,6 +65,7 @@ def enter():
             Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
             r += 1
             updateScrollRegion()
+    
 
 
 def clear():
@@ -73,6 +80,16 @@ def clear():
         if int(label.grid_info()["row"]) > 6:
             label.grid_forget()
     
+    # reset the step varaibles
+    global saved_path_generator 
+    saved_path_generator= None
+    global astar_path
+    astar_path = None
+    global first_run
+    first_run = True
+    global astar_travelled_path
+    astar_travelled_path = None
+
     num_of_rows.insert(0, "Ex: 5, 10, 20")
     num_of_cols.insert(0, "Ex: 5, 10, 20")
     wall_prob.insert(0, "Ex: .1, .2, .3")
@@ -82,6 +99,109 @@ def clear():
     end_coord_two.insert(0, "Ex: 8")
 
     root.bind("<1>", lambda event: event.widget.focus_set())
+
+
+#note: will need to run step display only, or have a toggle later on
+def step_display():
+    #only run this code on the first run: it creates the maze, error checks, and saves information to global variables 
+    global first_run
+    if first_run:
+        for label in fTable.grid_slaves():
+            if int(label.grid_info()["row"]) > 6:
+                label.grid_forget()
+
+        rows = int(num_of_rows.get())
+        cols = int(num_of_cols.get())
+        wall = float(wall_prob.get())
+        start_x = int(start_coord.get())
+        start_y = int(start_coord_two.get())
+        end_x = int(end_coord.get())
+        end_y = int(end_coord_two.get())
+        if start_x < 1 or start_x > rows-2 or start_y < 1 or start_y > cols-2:
+            messagebox.showerror('???', 'Error: Invalid Start Coordinate!')
+            start_coord.delete(0, END)
+            start_coord_two.delete(0, END)
+            start_coord.insert(0, "Ex: 1")
+            start_coord_two.insert(0, "Ex: 1")
+            return
+        if end_x < 1 or end_x > rows-2 or end_y < 1 or end_y > cols-2:
+            messagebox.showerror('???', 'Error: Invalid End Coordinate!')
+            end_coord.delete(0, END)
+            end_coord_two.delete(0, END)
+            end_coord.insert(0, "Ex: 8")
+            end_coord_two.insert(0, "Ex: 8")
+            return
+        r = 8
+
+        # code similal to begin()
+        global maze
+        maze = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
+        print("Generated Maze:")
+        print_maze(maze)
+        Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=7)
+        for row in maze:
+            Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
+            updateScrollRegion()
+            
+
+        start = (start_x, start_y)
+        goal = (end_x, end_y)
+        global saved_path_generator
+        saved_path_generator = astar_pathfind_gen(maze, start, goal)
+        global astar_path
+        astar_path = []
+        
+        first_run = False
+        global astar_travelled_path
+        astar_travelled_path = []
+
+        for node in saved_path_generator:
+            #print(node, end=", ")
+            astar_path.append(node)
+        print()
+
+    
+        if goal not in astar_path:
+            Label(fTable, text="No valid path found.").grid(row=7, column=1)
+            
+    
+        Label(fTable, text="Shortest Path:").grid(pady=2, row=7, column=1)
+    
+
+    r=8 # need to redeclare since r is created in the firstrun section
+
+
+    
+
+    # build path
+    if len(astar_path) == 0:
+        astar_path = astar_travelled_path
+        astar_travelled_path = []
+        for i in range(len(astar_travelled_path)):
+            step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = 0
+        # debug
+        print_maze(maze)
+    
+    # debug
+    print("Viewed:")
+    print(astar_travelled_path)
+    print("To be viewed:")
+    print(astar_path)
+
+
+    step_maze = maze[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
+    for i in range(len(astar_travelled_path)):
+        step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = '*'
+    step_maze[astar_path[0][0]][astar_path[0][1]] = '*'
+
+    astar_travelled_path.append(astar_path.pop(0))
+
+
+    for row in step_maze:
+        Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
+        r += 1
+        updateScrollRegion()
+
 
 def remove_row_text():
     if num_of_rows.get() != "":
@@ -184,6 +304,8 @@ close_parenth_label = Label(fTable, text=")").grid(row=4, column=2, sticky=W)
 pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=5, pady=1).grid(row=6, column=0, pady=10)
 
 clear_arguments = Button(fTable, text="Clear", command=clear, width=10, padx=5, pady=1).grid(row=6, column=1)
+
+step_display = Button(fTable, text="Generate Step", command=step_display, width=10, padx=5, pady=1).grid(row=6, column=2, pady=10)
 
 # Allow keyboard enter key to create maze
 root.bind('<Return>', lambda event:enter())
