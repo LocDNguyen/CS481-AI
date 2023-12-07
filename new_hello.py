@@ -349,7 +349,7 @@ def user_input_maze():
         donothing = 1
         [user_visible_path.append(i) if i not in user_visible_path else donothing for position in astar_path for i in get_neighbors(position, rows, cols)]
         
-        if (x_move, y_move) not in astar_path and (x_move, y_move) in user_visible_path and maze[x_move][y_move] != 1:
+        if (x_move, y_move) not in astar_path and (x_move, y_move) in user_visible_path and maze[x_move][y_move] != '■':
             print(f"Valid position {x_move}, {y_move} found")
             [user_visible_path.append(i) if i not in user_visible_path else donothing for i in get_neighbors((x_move, y_move), rows, cols)]
             astar_path.append((x_move, y_move))
@@ -508,7 +508,7 @@ open_parenth_label = Label(fTable, text="(").grid(row=5, column=0, sticky=E)
 comma_label = Label(fTable, text=",").grid(row=5, column=1, padx=20, sticky=S)
 close_parenth_label = Label(fTable, text=")").grid(row=5, column=2, sticky=W)
 
-user_total_move_label = Label(fTable, text=text_str).grid(row=2, column=2, padx=20, pady=10)
+user_total_move_label = Label(fTable, textvariable=text_str).grid(row=2, column=2, padx=20, pady=10)
 text_str.set("Total Moves: ")
 updateScrollRegion()
 # Create buttons for creating the maze and clearing everything
