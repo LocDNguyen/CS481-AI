@@ -7,9 +7,11 @@ from tkinter import *
 from tkinter import messagebox
 from scroll import *
 from Astar_gen import *
+import copy
 
 saved_path_generator = None
 first_run = True
+first_run_input = True
 path = None
 astar_travelled_path = None
 astar_path = None
@@ -21,6 +23,7 @@ global start_y
 global end_x
 global end_y
 global maze
+global user_maze
 
 text_str = StringVar()
 
@@ -40,6 +43,7 @@ def enter():
     global end_y
     global first_run
     global maze
+    global user_maze
     for label in fTable.grid_slaves():
         if int(label.grid_info()["row"]) > 7:
             label.grid_forget()
@@ -73,6 +77,7 @@ def enter():
 
     # code similar to begin()
     maze = start(rows, cols, wall, start_x, start_y, end_x, end_y)
+    user_maze = copy.deepcopy(maze)
     Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in maze:
         Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
@@ -133,6 +138,8 @@ def clear():
     first_run = True
     global astar_travelled_path
     astar_travelled_path = None
+    global first_run_input
+    first_run_input = True
 
     num_of_rows.insert(0, "Ex: 5, 10, 20")
     num_of_cols.insert(0, "Ex: 5, 10, 20")
@@ -228,15 +235,17 @@ def user_input_maze():
     global start_y
     global end_x
     global end_y
-    global first_run
+    global first_run_input
     global maze
-    if first_run:
-        first_run = False
+    global user_maze
+    if first_run_input:
+        first_run_input = False
         start = (start_x, start_y)
         goal = (end_x, end_y)
 
-        x_move = int(user_move_x.get())
-        y_move = int(user_move_y.get())
+        for label in fTable.grid_slaves():
+            if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
+                label.grid_forget()
 
         global astar_path 
         astar_path = [start]
@@ -246,15 +255,15 @@ def user_input_maze():
         [user_visible_path.append(i) if i not in user_visible_path else donothing for i in get_neighbors(start, rows, cols)]
         print("reached first maze print")
         r = 9
-        for row in range(len(maze)):
+        for row in range(len(user_maze)):
             row_arr = []
-            for col in range(len(maze[0])):
+            for col in range(len(user_maze[0])):
                 if (row, col) == goal:
                     row_arr.append('G')
                 elif (row, col) == start:
                     row_arr.append('★')
                 elif (row, col) in user_visible_path:
-                    row_arr.append(maze[row][col])
+                    row_arr.append(user_maze[row][col])
                 elif row == 0 or row == rows - 1:
                     row_arr.append('─')
                 elif (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
@@ -283,20 +292,20 @@ def user_input_maze():
         donothing = 1
         [user_visible_path.append(i) if i not in user_visible_path else donothing for position in astar_path for i in get_neighbors(position, rows, cols)]
         
-        if (x_move, y_move) not in astar_path and (x_move, y_move) in user_visible_path and maze[x_move][y_move] != 1 and maze[x_move][y_move] != '■':
+        if (x_move, y_move) not in astar_path and (x_move, y_move) in user_visible_path and user_maze[x_move][y_move] != 1 and user_maze[x_move][y_move] != '■':
             print(f"Valid position {x_move}, {y_move} found")
             [user_visible_path.append(i) if i not in user_visible_path else donothing for i in get_neighbors((x_move, y_move), rows, cols)]
             astar_path.append((x_move, y_move))
 
-            for row in range(len(maze)):
+            for row in range(len(user_maze)):
                 row_arr = []
-                for col in range(len(maze[0])):
+                for col in range(len(user_maze[0])):
                     if (row, col) == (end_x, end_y) and (x_move, y_move) != (end_x, end_y):
                         row_arr.append('G')
                     elif (row, col) == (x_move, y_move):
                         row_arr.append('★')
                     elif (row, col) in user_visible_path:
-                        row_arr.append(maze[row][col])
+                        row_arr.append(user_maze[row][col])
                     elif row == 0 or row == rows - 1:
                         row_arr.append('─')
                     elif (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
