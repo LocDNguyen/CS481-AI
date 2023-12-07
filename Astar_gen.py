@@ -1,6 +1,6 @@
 from math import sqrt
 import random
-
+import copy
 
 
 
@@ -150,7 +150,8 @@ def start(rows, cols, wall_probability, start_x, start_y, end_x, end_y):
 def finish(new_maze, start_x, start_y, end_x, end_y):
     start = (start_x, start_y)
     goal = (end_x, end_y)
-    astar_pgen = astar_pathfind_gen(new_maze, start, goal)
+    temp = copy.deepcopy(new_maze)
+    astar_pgen = astar_pathfind_gen(temp, start, goal)
     astar_path = []
     for node in astar_pgen:
         #print(node, end=", ")
@@ -167,8 +168,7 @@ def finish(new_maze, start_x, start_y, end_x, end_y):
             num += 1
         else:
             num = 1
-        new_maze[astar_path[i][0]][astar_path[i][1]] = val
+        temp[astar_path[i][0]][astar_path[i][1]] = val
 
     # print("A is the start position, " + chr(ord('A') + len(astar_path) - 1) + " is the goal position")
-    print_maze(new_maze)
-    return new_maze
+    return temp

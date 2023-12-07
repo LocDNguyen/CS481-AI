@@ -10,9 +10,8 @@ from Astar_gen import *
 
 saved_path_generator = None
 first_run = True
-astar_path = None
+path = None
 astar_travelled_path = None
-global maze
 global rows
 global cols
 global wall
@@ -20,6 +19,8 @@ global start_x
 global start_y
 global end_x
 global end_y
+global maze
+global temp
 
 root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
@@ -69,19 +70,19 @@ def enter():
         return
 
     # code similar to begin()
-    maze = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
-    temp = maze
+    maze = start(rows, cols, wall, start_x, start_y, end_x, end_y)
     Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in maze:
         Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
         updateScrollRegion()
-    final = finish(temp, start_x, start_y, end_x, end_y)
+    final = finish(maze, start_x, start_y, end_x, end_y)
     if final == None:
         Label(fTable, text="No valid path found.").grid(row=8, column=1)
     else:
         Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
         show_complete_maze.config(state=NORMAL)
         generate_steps.config(state=NORMAL)
+    print_maze(maze)
         
 
             
@@ -91,7 +92,6 @@ def instant():
     for label in fTable.grid_slaves():
         if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
             label.grid_forget()
-
     final = finish(maze, start_x, start_y, end_x, end_y)
     r = 9
     for row in final:
@@ -140,19 +140,19 @@ def clear():
 def step_display():
     #only run this code on the first run: it creates the maze, error checks, and saves information to global variables 
     global first_run
-    for label in fTable.grid_slaves():
-        if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
-            label.grid_forget()
+    global temp
     if first_run:
-        # for label in fTable.grid_slaves():
-        #     if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
-        #         label.grid_forget()
+        for label in fTable.grid_slaves():
+            if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
+                label.grid_forget()
+
+        temp = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
         start = (start_x, start_y)
         goal = (end_x, end_y)
         global saved_path_generator
-        saved_path_generator = astar_pathfind_gen(maze, start, goal)
-        global astar_path
-        astar_path = []
+        saved_path_generator = astar_pathfind_gen(temp, start, goal)
+        global path
+        path = []
         
         first_run = False
         global astar_travelled_path
@@ -160,7 +160,7 @@ def step_display():
 
         for node in saved_path_generator:
             #print(node, end=", ")
-            astar_path.append(node)
+            path.append(node)
 
         #Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
         # r = 9
@@ -188,9 +188,9 @@ def step_display():
     step_maze = maze[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
     for i in range(len(astar_travelled_path)):
         step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = '★'
-    step_maze[astar_path[0][0]][astar_path[0][1]] = '★'
+    step_maze[path[0][0]][path[0][1]] = '★'
 
-    astar_travelled_path.append(astar_path.pop(0))
+    astar_travelled_path.append(path.pop(0))
 
 
     for row in maze:
@@ -202,10 +202,10 @@ def step_display():
     print("Viewed from N:")
     print(astar_travelled_path)
     print("To be viewed N:")
-    print(astar_path)
+    print(path)
 
 
-    if not astar_path:
+    if not path:
         generate_steps.config(state=DISABLED)
     else:
         back_button.config(state=NORMAL)
@@ -213,10 +213,10 @@ def step_display():
 def back():
     r = 9
     step_maze = maze[:]
-    for i in range(len(astar_path)):
-        step_maze[astar_path[i][0]][astar_path[i][1]] = " "
+    for i in range(len(path)):
+        step_maze[path[i][0]][path[i][1]] = " "
 
-    astar_path.insert(0, astar_travelled_path.pop(-1))
+    path.insert(0, astar_travelled_path.pop(-1))
 
     for row in step_maze:
         Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
@@ -227,7 +227,7 @@ def back():
     print("Viewed from P:")
     print(astar_travelled_path)
     print("To be viewed P:")
-    print(astar_path)
+    print(path)
 
     if not astar_travelled_path:
         back_button.config(state=DISABLED)
