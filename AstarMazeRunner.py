@@ -25,8 +25,6 @@ def enter():
         if int(label.grid_info()["row"]) > 7:
             label.grid_forget()
 
-    # newWindow.destroy()
-
     rows = int(num_of_rows.get())
     cols = int(num_of_cols.get())
     wall = float(wall_prob.get())
@@ -67,63 +65,6 @@ def enter():
             Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
             r += 1
             updateScrollRegion()
-
-    # m = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
-    # print("Generated Maze:")
-    # print_maze(m)
-    # Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
-    # for row in m:
-    #     Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
-    #     updateScrollRegion()
-
-    # s = (start_x, start_y)
-    # goal = (end_x, end_y)
-    # spg = astar_pathfind_gen(m, s, goal)
-    # ap = []
-    # atp = []
-
-    # for node in spg:
-    #     #print(node, end=", ")
-    #     ap.append(node)
-    # print()
-
-
-    # if goal not in ap:
-    #     Label(fTable, text="No valid path found.").grid(row=8, column=1)
-        
-
-    # Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
-
-    
-    # # build path
-    # if len(ap) == 0:
-    #     ap = atp
-    #     atp = []
-    #     for i in range(len(atp)):
-    #         step_maze[atp[i][0]][atp[i][1]] = 0
-    #     # debug
-    #     print_maze(m)
-    # for i in range(len(ap)):
-    #     step_maze = m[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
-    #     for i in range(len(atp)):
-    #         if i <= 25:
-    #             step_maze[atp[i][0]][atp[i][1]] =  '*'
-    #         else:
-    #             step_maze[atp[i][0]][atp[i][1]] = '*'
-    #     step_maze[ap[0][0]][ap[0][1]] = '*'
-
-    #     atp.append(ap.pop(0))
-
-    # num = 0
-    # for row in step_maze:
-    #     if num <= 1:
-    #         Label(fTable, text=row, fg='green', borderwidth=1).grid(pady=2, row=r, column=1)
-    #         r += 1
-    #         num += 1
-    #     else:
-    #         Label(fTable, text=row, fg='red', borderwidth=1).grid(pady=2, row=r, column=1)
-    #         r += 1
-    #     updateScrollRegion()
     
 
 
@@ -196,7 +137,7 @@ def step_display():
             return
         r = 9
 
-        # code similal to begin()
+        # code similar to begin()
         global maze
         maze = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
         print("Generated Maze:")
@@ -230,17 +171,6 @@ def step_display():
     
         Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
 
-
-        # New window to print astar_travalled_path
-        # global newWindow
-        # newWindow = Toplevel(root)
-        # newWindow.title("New Window")
-        # newWindow.geometry("200x200+900+100")
-        # Label(newWindow, text="Viewed:").pack()
-        # global wow
-        # wow = Label(newWindow, text = "")
-        # wow.pack()
-
     r=9 # need to redeclare since r is created in the firstrun section
 
 
@@ -249,18 +179,14 @@ def step_display():
         astar_path = astar_travelled_path
         astar_travelled_path = []
         for i in range(len(astar_travelled_path)):
-            step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = 0
+            step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = " "
         # debug
         print_maze(maze)
-    
-    # debug
-    #wow.config(text = astar_travelled_path)
-
 
     step_maze = maze[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
     for i in range(len(astar_travelled_path)):
-        step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = '*'
-    step_maze[astar_path[0][0]][astar_path[0][1]] = '*'
+        step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = '★'
+    step_maze[astar_path[0][0]][astar_path[0][1]] = '★'
 
     astar_travelled_path.append(astar_path.pop(0))
 
@@ -270,6 +196,7 @@ def step_display():
         r += 1
         updateScrollRegion()
 
+    # debug
     print("Viewed from N:")
     print(astar_travelled_path)
     print("To be viewed N:")
@@ -285,7 +212,7 @@ def back():
     r = 9
     step_maze = maze[:]
     for i in range(len(astar_path)):
-        step_maze[astar_path[i][0]][astar_path[i][1]] = '0'
+        step_maze[astar_path[i][0]][astar_path[i][1]] = " "
     #step_maze[astar_path[0][0]][astar_path[0][1]] = '0'
 
     astar_path.insert(0, astar_travelled_path.pop(-1))

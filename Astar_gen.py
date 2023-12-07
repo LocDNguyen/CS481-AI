@@ -4,7 +4,7 @@ import random
 
 
 def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
-    maze = [[0] * cols for _ in range(rows)]
+    maze = [[" "] * cols for _ in range(rows)]
     for row in range(rows):
         for col in range(cols):
             if row == 0 or row == rows - 1:
@@ -12,9 +12,9 @@ def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
             if (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
                 maze[row][col] = '|'  # Side border of maze
             if row != 0 and col != 0 and row != rows - 1 and col != cols-1 and random.random() < wall_prob:
-                maze[row][col] = '■'    # █ Represents obstacles
-    maze[start_x][start_y] = 0
-    maze[end_x][end_y] = 0
+                maze[row][col] = '■'    # ■ Represents obstacles
+    maze[start_x][start_y] = " "
+    maze[end_x][end_y] = " "
     return maze
 
 def print_maze(maze):
@@ -117,7 +117,7 @@ def astar_pathfind_gen(maze, start, goal):
                 else:
                     # coords are in list, need to check if cost function should be updated
                     if get_cost(open_set, neighbor) > heuristic(neighbor, goal) + actual_cost:
-                        # print("Updating cost of: " + str(neighbor) + " to " + str(heuristic(neighbor, goal) + actual_cost) + " from " + str(get_cost(open_set, neighbor)))
+                        #print("Updating cost of: " + str(neighbor) + " to " + str(heuristic(neighbor, goal) + actual_cost) + " from " + str(get_cost(open_set, neighbor)))
                         #remove current tuple with oldcost, neighbor coordinates MOVED
                         #drop_by_coords(open_set, neighbor)
                         open_set = insert_by_cost(open_set, actual_cost+heuristic(neighbor, goal), neighbor)
