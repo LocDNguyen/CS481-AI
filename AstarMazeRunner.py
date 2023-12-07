@@ -178,7 +178,7 @@ def step_display():
 
     r=9 # need to redeclare since r is created in the firstrun section
 
-    step_maze = maze[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
+    step_maze = maze[:]
     for i in range(len(astar_travelled_path)):
         step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = '★'
     step_maze[path[0][0]][path[0][1]] = '★'
