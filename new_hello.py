@@ -54,7 +54,7 @@ def enter():
     begin = start(rows, cols, wall, start_x, start_y, end_x, end_y)
     Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in begin:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
+        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
         updateScrollRegion()
 
     # Display A* maze
@@ -64,9 +64,66 @@ def enter():
     else:
         Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
         for row in final:
-            Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
+            Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
             r += 1
             updateScrollRegion()
+
+    # m = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
+    # print("Generated Maze:")
+    # print_maze(m)
+    # Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
+    # for row in m:
+    #     Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
+    #     updateScrollRegion()
+
+    # s = (start_x, start_y)
+    # goal = (end_x, end_y)
+    # spg = astar_pathfind_gen(m, s, goal)
+    # ap = []
+    # atp = []
+
+    # for node in spg:
+    #     #print(node, end=", ")
+    #     ap.append(node)
+    # print()
+
+
+    # if goal not in ap:
+    #     Label(fTable, text="No valid path found.").grid(row=8, column=1)
+        
+
+    # Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
+
+    
+    # # build path
+    # if len(ap) == 0:
+    #     ap = atp
+    #     atp = []
+    #     for i in range(len(atp)):
+    #         step_maze[atp[i][0]][atp[i][1]] = 0
+    #     # debug
+    #     print_maze(m)
+    # for i in range(len(ap)):
+    #     step_maze = m[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
+    #     for i in range(len(atp)):
+    #         if i <= 25:
+    #             step_maze[atp[i][0]][atp[i][1]] =  '*'
+    #         else:
+    #             step_maze[atp[i][0]][atp[i][1]] = '*'
+    #     step_maze[ap[0][0]][ap[0][1]] = '*'
+
+    #     atp.append(ap.pop(0))
+
+    # num = 0
+    # for row in step_maze:
+    #     if num <= 1:
+    #         Label(fTable, text=row, fg='green', borderwidth=1).grid(pady=2, row=r, column=1)
+    #         r += 1
+    #         num += 1
+    #     else:
+    #         Label(fTable, text=row, fg='red', borderwidth=1).grid(pady=2, row=r, column=1)
+    #         r += 1
+    #     updateScrollRegion()
     
 
 
@@ -146,7 +203,7 @@ def step_display():
         print_maze(maze)
         Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
         for row in maze:
-            Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
+            Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
             updateScrollRegion()
             
 
@@ -209,7 +266,7 @@ def step_display():
 
 
     for row in step_maze:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
+        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
 
@@ -234,7 +291,7 @@ def back():
     astar_path.insert(0, astar_travelled_path.pop(-1))
 
     for row in step_maze:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
+        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
 
