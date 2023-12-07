@@ -22,7 +22,7 @@ root.geometry("800x500+200+100")
 
 def enter():
     for label in fTable.grid_slaves():
-        if int(label.grid_info()["row"]) > 6:
+        if int(label.grid_info()["row"]) > 7:
             label.grid_forget()
 
     # newWindow.destroy()
@@ -48,11 +48,11 @@ def enter():
         end_coord.insert(0, "Ex: 8")
         end_coord_two.insert(0, "Ex: 8")
         return
-    r = 8
+    r = 9
 
     # Display initial maze
     begin = start(rows, cols, wall, start_x, start_y, end_x, end_y)
-    Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=7)
+    Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in begin:
         Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
         updateScrollRegion()
@@ -60,9 +60,9 @@ def enter():
     # Display A* maze
     final = finish(begin, start_x, start_y, end_x, end_y)
     if final == "None":
-        Label(fTable, text="No valid path found.").grid(row=7, column=1)
+        Label(fTable, text="No valid path found.").grid(row=8, column=1)
     else:
-        Label(fTable, text="Shortest Path:").grid(pady=2, row=7, column=1)
+        Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
         for row in final:
             Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
             r += 1
@@ -80,10 +80,11 @@ def clear():
     end_coord_two.delete(0, END)
 
     for label in fTable.grid_slaves():
-        if int(label.grid_info()["row"]) > 6:
+        if int(label.grid_info()["row"]) > 7:
             label.grid_forget()
 
-    # newWindow.destroy()
+    back_button.config(state=DISABLED)
+    generate_steps.config(state=NORMAL)
     
     # reset the step varaibles
     global saved_path_generator 
@@ -112,7 +113,7 @@ def step_display():
     global first_run
     if first_run:
         for label in fTable.grid_slaves():
-            if int(label.grid_info()["row"]) > 6:
+            if int(label.grid_info()["row"]) > 7:
                 label.grid_forget()
 
         rows = int(num_of_rows.get())
@@ -136,14 +137,14 @@ def step_display():
             end_coord.insert(0, "Ex: 8")
             end_coord_two.insert(0, "Ex: 8")
             return
-        r = 8
+        r = 9
 
         # code similal to begin()
         global maze
         maze = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
         print("Generated Maze:")
         print_maze(maze)
-        Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=7)
+        Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
         for row in maze:
             Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, column=0)
             updateScrollRegion()
@@ -167,10 +168,10 @@ def step_display():
 
     
         if goal not in astar_path:
-            Label(fTable, text="No valid path found.").grid(row=7, column=1)
+            Label(fTable, text="No valid path found.").grid(row=8, column=1)
             
     
-        Label(fTable, text="Shortest Path:").grid(pady=2, row=7, column=1)
+        Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
 
 
         # New window to print astar_travalled_path
@@ -183,10 +184,8 @@ def step_display():
         # wow = Label(newWindow, text = "")
         # wow.pack()
 
-    r=8 # need to redeclare since r is created in the firstrun section
+    r=9 # need to redeclare since r is created in the firstrun section
 
-
-    
 
     # build path
     if len(astar_path) == 0:
@@ -199,10 +198,6 @@ def step_display():
     
     # debug
     #wow.config(text = astar_travelled_path)
-    print("Viewed:")
-    print(astar_travelled_path)
-    print("To be viewed:")
-    print(astar_path)
 
 
     step_maze = maze[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
@@ -218,6 +213,11 @@ def step_display():
         r += 1
         updateScrollRegion()
 
+    print("Viewed from N:")
+    print(astar_travelled_path)
+    print("To be viewed N:")
+    print(astar_path)
+
 
     if not astar_path:
         generate_steps.config(state=DISABLED)
@@ -225,14 +225,11 @@ def step_display():
         back_button.config(state=NORMAL)
 
 def back():
-    for label in fTable.grid_slaves():
-            if int(label.grid_info()["row"]) > 7 and int(label.grid_info()["column"]) > 0:
-                label.grid_forget()
-    r = 8
+    r = 9
     step_maze = maze[:]
     for i in range(len(astar_path)):
         step_maze[astar_path[i][0]][astar_path[i][1]] = '0'
-    #step_maze[astar_travelled_path[0][0]][astar_travelled_path[0][1]] = '0'
+    #step_maze[astar_path[0][0]][astar_path[0][1]] = '0'
 
     astar_path.insert(0, astar_travelled_path.pop(-1))
 
@@ -240,6 +237,11 @@ def back():
         Label(fTable, text=" ".join(map(str,row)), borderwidth=1).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
+
+    print("Viewed from P:")
+    print(astar_travelled_path)
+    print("To be viewed P:")
+    print(astar_path)
 
     if not astar_travelled_path:
         back_button.config(state=DISABLED)
@@ -346,18 +348,20 @@ comma_label = Label(fTable, text=",").grid(row=4, column=1, padx=20, sticky=S)
 close_parenth_label = Label(fTable, text=")").grid(row=4, column=2, sticky=W)
 
 # Create buttons for creating the maze and clearing everything
-pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=5, pady=1).grid(row=6, column=0, pady=10)
+pass_arguments = Button(fTable, text="Instant", command=enter, width=10, padx=5, pady=1).grid(row=7, column=0, pady=10)
 
-clear_arguments = Button(fTable, text="Clear", command=clear, width=10, padx=5, pady=1).grid(row=6, column=1)
+clear_arguments = Button(fTable, text="Clear", command=clear, width=10, padx=5, pady=1).grid(row=7, column=1)
 
-generate_steps = Button(fTable, text="Generate Next Step", command=step_display, width=10, padx=5, pady=1)
-generate_steps.grid(row=6, column=2, pady=10, padx=50)
+generate_steps = Button(fTable, text="Generate Next Step", command=step_display, width=18, padx=5, pady=1)
+generate_steps.grid(row=6, column=0, pady=10)
 
-back_button = Button(fTable, text="Generate Previous Step", command=back, width=10, padx=5, pady=1, state=DISABLED)
-back_button.grid(row=6, column=3, pady=10, padx=50)
+back_button = Button(fTable, text="Generate Previous Step", command=back, width=18, padx=5, pady=1, state=DISABLED)
+back_button.grid(row=6, column=1, pady=10)
 
-# Allow keyboard enter key to create maze
-root.bind('<Return>', lambda event:enter())
+# Allow keyboard keys to activate buttons
+# root.bind('<Return>', lambda event:step_display())
+# root.bind('<Left>', lambda event:back())
+# root.bind('<Right>', lambda event:step_display())
 
 # Entry box descriptions
 num_of_rows.bind("<FocusIn>", lambda event:remove_row_text())

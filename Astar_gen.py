@@ -3,7 +3,6 @@ import random
 
 
 
-
 def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
     maze = [[0] * cols for _ in range(rows)]
     for row in range(rows):
@@ -188,12 +187,14 @@ def finish(maze, start_x, start_y, end_x, end_y):
         astar_path.append(node)
     print()
 
+    num = 0
+    x = 'A'
     for i in range(len(astar_path)):
-        x='A'
-        if i <= 25:
-            val=chr(ord(x) + i)
+        if num <= 25:
+            val=chr(ord(x) + num)
+            num += 1
         else:
-            x = 'A'
+            num = 1
         maze[astar_path[i][0]][astar_path[i][1]] = val
 
     # print("A is the start position, " + chr(ord('A') + len(astar_path) - 1) + " is the goal position")
