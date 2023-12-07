@@ -75,7 +75,7 @@ def enter():
     maze = start(rows, cols, wall, start_x, start_y, end_x, end_y)
     Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in maze:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
+        Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
         updateScrollRegion()
     final = finish(maze, start_x, start_y, end_x, end_y)
     if final == None:
@@ -98,7 +98,7 @@ def instant():
     final = finish(maze, start_x, start_y, end_x, end_y)
     r = 9
     for row in final:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
+        Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
     
@@ -112,6 +112,8 @@ def clear():
     start_coord_two.delete(0, END)
     end_coord.delete(0, END)
     end_coord_two.delete(0, END)
+    user_move_x.delete(0, END)
+    user_move_y.delete(0, END)
 
     for label in fTable.grid_slaves():
         if int(label.grid_info()["row"]) > 7:
@@ -139,6 +141,9 @@ def clear():
     start_coord_two.insert(0, "Ex: 1")
     end_coord.insert(0, "Ex: 8")
     end_coord_two.insert(0, "Ex: 8")
+    user_move_x.insert(0, "Ex: 2")
+    user_move_y.insert(0, "Ex: 2")
+
 
 
 def step_display():
@@ -175,7 +180,7 @@ def step_display():
 
 
     for row in step_maze:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
+        Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
 
@@ -200,7 +205,7 @@ def back():
     path.insert(0, astar_travelled_path.pop(-1))
 
     for row in step_maze:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
+        Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
 
