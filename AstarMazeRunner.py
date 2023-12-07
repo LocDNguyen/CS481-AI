@@ -226,52 +226,7 @@ def user_input_maze():
     global first_run
     global maze
     if first_run:
-
-        # generate_steps.config(state=DISABLED)
-        # back_button.config(state=DISABLED)
-        # # pass_arguments.config(state=DISABLED)
-        # for label in fTable.grid_slaves():
-        #     if int(label.grid_info()["row"]) > 7:
-        #         label.grid_forget()
-
-        # rows = int(num_of_rows.get())
-        # cols = int(num_of_cols.get())
-        # wall = float(wall_prob.get())
-        # start_x = int(start_coord.get())
-        # start_y = int(start_coord_two.get())
-        # global end_x
-        # end_x = int(end_coord.get())
-        # global end_y
-        # end_y = int(end_coord_two.get())
-        # if start_x < 1 or start_x > rows-2 or start_y < 1 or start_y > cols-2:
-        #     messagebox.showerror('???', 'Error: Invalid Start Coordinate!')
-        #     start_coord.delete(0, END)
-        #     start_coord_two.delete(0, END)
-        #     start_coord.insert(0, "Ex: 1")
-        #     start_coord_two.insert(0, "Ex: 1")
-        #     return
-        # if end_x < 1 or end_x > rows-2 or end_y < 1 or end_y > cols-2:
-        #     messagebox.showerror('???', 'Error: Invalid End Coordinate!')
-        #     end_coord.delete(0, END)
-        #     end_coord_two.delete(0, END)
-        #     end_coord.insert(0, "Ex: 8")
-        #     end_coord_two.insert(0, "Ex: 8")
-        #     return
-        # r = 9
-
         first_run = False
-
-        # # code similal to begin()
-        # global maze
-        # maze = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
-        # print("Generated Maze:")
-        # print_maze(maze)
-        # Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
-        # for row in maze:
-        #     Label(fTable, text="  ".join(map(str,'+')), borderwidth=1).grid(pady=2, column=0)
-        #     updateScrollRegion()
-            
-
         start = (start_x, start_y)
         goal = (end_x, end_y)
 
