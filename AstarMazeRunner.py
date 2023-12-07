@@ -405,15 +405,15 @@ comma_label = Label(fTable, text=",").grid(row=4, column=1, padx=20, sticky=S)
 close_parenth_label = Label(fTable, text=")").grid(row=4, column=2, sticky=W)
 
 # Create buttons for creating the maze and clearing everything
+back_button = Button(fTable, text="Generate Previous Step", command=back, width=18, padx=5, pady=1, state=DISABLED)
+back_button.grid(row=6, column=0, pady=10)
+
+generate_steps = Button(fTable, text="Generate Next Step", command=step_display, width=18, padx=5, pady=1)
+generate_steps.grid(row=6, column=1, pady=10)
+
 pass_arguments = Button(fTable, text="Instant", command=enter, width=10, padx=5, pady=1).grid(row=7, column=0, pady=10)
 
 clear_arguments = Button(fTable, text="Clear", command=clear, width=10, padx=5, pady=1).grid(row=7, column=1)
-
-generate_steps = Button(fTable, text="Generate Next Step", command=step_display, width=18, padx=5, pady=1)
-generate_steps.grid(row=6, column=0, pady=10)
-
-back_button = Button(fTable, text="Generate Previous Step", command=back, width=18, padx=5, pady=1, state=DISABLED)
-back_button.grid(row=6, column=1, pady=10)
 
 # Allow keyboard keys to activate buttons
 # root.bind('<Return>', lambda event:step_display())

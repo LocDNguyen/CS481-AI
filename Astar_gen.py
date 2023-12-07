@@ -7,8 +7,12 @@ def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
     maze = [[0] * cols for _ in range(rows)]
     for row in range(rows):
         for col in range(cols):
-            if row == 0 or col == 0 or row == rows - 1 or col == cols - 1 or random.random() < wall_prob:
-                maze[row][col] = 1  # 1 represents a wall
+            if row == 0 or row == rows - 1:
+                maze[row][col] = '─'  # Top and Bottom border of maze
+            if (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
+                maze[row][col] = '|'  # Side border of maze
+            if row != 0 and col != 0 and row != rows - 1 and col != cols-1 and random.random() < wall_prob:
+                maze[row][col] = '■'    # █ Represents obstacles
     maze[start_x][start_y] = 0
     maze[end_x][end_y] = 0
     return maze
@@ -104,7 +108,7 @@ def astar_pathfind_gen(maze, start, goal):
         print(open_set)
 
         for neighbor in get_neighbors(current_node, rows, cols):
-            if maze[neighbor[0]][neighbor[1]] != 1 and neighbor not in explored.keys():
+            if maze[neighbor[0]][neighbor[1]] != '■' and maze[neighbor[0]][neighbor[1]] != '─' and maze[neighbor[0]][neighbor[1]] != '|' and neighbor not in explored.keys():
                 if not coords_in_list(open_set, neighbor):
                     # print("Adding: " + str(neighbor) + " with cost: " + str(actual_cost+heuristic(neighbor, goal)))
                     open_set = insert_by_cost(open_set, actual_cost+heuristic(neighbor, goal), neighbor)

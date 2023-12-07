@@ -13,7 +13,7 @@ def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
             if (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
                 maze[row][col] = '|'  # Side border of maze
             if row != 0 and col != 0 and row != rows - 1 and col != cols-1 and random.random() < wall_prob:
-                maze[row][col] = '1'    # █ Represents obstacles
+                maze[row][col] = '█'    # █ Represents obstacles
     maze[start_x][start_y] = 0
     maze[end_x][end_y] = 0
     return maze
