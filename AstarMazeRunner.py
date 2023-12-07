@@ -12,6 +12,7 @@ saved_path_generator = None
 first_run = True
 path = None
 astar_travelled_path = None
+astar_path = None
 global rows
 global cols
 global wall
@@ -20,6 +21,8 @@ global start_y
 global end_x
 global end_y
 global maze
+
+text_str = StringVar()
 
 root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
@@ -81,6 +84,7 @@ def enter():
         Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
         show_complete_maze.config(state=NORMAL)
         generate_steps.config(state=NORMAL)
+        user_input_steps.config(state=NORMAL)
     print_maze(maze)
         
 
@@ -116,6 +120,7 @@ def clear():
     back_button.config(state=DISABLED)
     generate_steps.config(state=DISABLED)
     show_complete_maze.config(state=DISABLED)
+    user_input_steps.config(state=DISABLED)
     
     # reset the step variables
     global saved_path_generator 
@@ -159,28 +164,7 @@ def step_display():
             #print(node, end=", ")
             path.append(node)
 
-        #Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
-        # r = 9
-        # for row in maze:
-        #     Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
-        #     r += 1
-        #     updateScrollRegion()
-
     r=9 # need to redeclare since r is created in the firstrun section
-    # for label in fTable.grid_slaves():
-    #     if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
-    #         label.grid_forget()
-            
-
-    # build path
-    # if len(astar_path) == 0:
-    #     print('ere')
-    #     astar_path = astar_travelled_path
-    #     astar_travelled_path = []
-    #     for i in range(len(astar_travelled_path)):
-    #         step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = " "
-    #     # debug
-    #     print_maze(maze)
 
     step_maze = maze[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
     for i in range(len(astar_travelled_path)):
@@ -230,6 +214,151 @@ def back():
         back_button.config(state=DISABLED)
     else:
         generate_steps.config(state=NORMAL)
+
+def user_input_maze():
+    global rows
+    global cols
+    global wall
+    global start_x
+    global start_y
+    global end_x
+    global end_y
+    global first_run
+    global maze
+    if first_run:
+
+        # generate_steps.config(state=DISABLED)
+        # back_button.config(state=DISABLED)
+        # # pass_arguments.config(state=DISABLED)
+        # for label in fTable.grid_slaves():
+        #     if int(label.grid_info()["row"]) > 7:
+        #         label.grid_forget()
+
+        # rows = int(num_of_rows.get())
+        # cols = int(num_of_cols.get())
+        # wall = float(wall_prob.get())
+        # start_x = int(start_coord.get())
+        # start_y = int(start_coord_two.get())
+        # global end_x
+        # end_x = int(end_coord.get())
+        # global end_y
+        # end_y = int(end_coord_two.get())
+        # if start_x < 1 or start_x > rows-2 or start_y < 1 or start_y > cols-2:
+        #     messagebox.showerror('???', 'Error: Invalid Start Coordinate!')
+        #     start_coord.delete(0, END)
+        #     start_coord_two.delete(0, END)
+        #     start_coord.insert(0, "Ex: 1")
+        #     start_coord_two.insert(0, "Ex: 1")
+        #     return
+        # if end_x < 1 or end_x > rows-2 or end_y < 1 or end_y > cols-2:
+        #     messagebox.showerror('???', 'Error: Invalid End Coordinate!')
+        #     end_coord.delete(0, END)
+        #     end_coord_two.delete(0, END)
+        #     end_coord.insert(0, "Ex: 8")
+        #     end_coord_two.insert(0, "Ex: 8")
+        #     return
+        # r = 9
+
+        first_run = False
+
+        # # code similal to begin()
+        # global maze
+        # maze = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
+        # print("Generated Maze:")
+        # print_maze(maze)
+        # Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
+        # for row in maze:
+        #     Label(fTable, text="  ".join(map(str,'+')), borderwidth=1).grid(pady=2, column=0)
+        #     updateScrollRegion()
+            
+
+        start = (start_x, start_y)
+        goal = (end_x, end_y)
+
+        x_move = int(user_move_x.get())
+        y_move = int(user_move_y.get())
+
+        global astar_path 
+        astar_path = [start]
+        global user_visible_path
+        user_visible_path = [start]
+        donothing = 1
+        [user_visible_path.append(i) if i not in user_visible_path else donothing for i in get_neighbors(start, rows, cols)]
+        print("reached first maze print")
+        r = 9
+        for row in range(len(maze)):
+            row_arr = []
+            for col in range(len(maze[0])):
+                if (row, col) == goal:
+                    row_arr.append('G')
+                elif (row, col) == start:
+                    row_arr.append('★')
+                elif (row, col) in user_visible_path:
+                    row_arr.append(maze[row][col])
+                elif row == 0 or row == rows - 1:
+                    row_arr.append('─')
+                elif (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
+                    row_arr.append('|')
+                else:
+                    row_arr.append(' ')
+            Label(fTable, text="  ".join(map(str,row_arr)), font=("Liberation Mono", "10"), borderwidth=1).grid(pady=2, row=r, column=1)
+            r += 1
+        
+        user_total_move_label.config(text="Total Moves: 1")
+        updateScrollRegion()
+
+        
+    else:
+        x_move = int(user_move_x.get())
+        y_move = int(user_move_y.get())
+
+        rows = int(num_of_rows.get())
+        cols = int(num_of_cols.get())
+        start_x = int(start_coord.get())
+        start_y = int(start_coord_two.get())
+        
+        r=9
+
+        user_visible_path = [(start_x, start_y)]
+        donothing = 1
+        [user_visible_path.append(i) if i not in user_visible_path else donothing for position in astar_path for i in get_neighbors(position, rows, cols)]
+        
+        if (x_move, y_move) not in astar_path and (x_move, y_move) in user_visible_path and maze[x_move][y_move] != 1 and maze[x_move][y_move] != '■':
+            print(f"Valid position {x_move}, {y_move} found")
+            [user_visible_path.append(i) if i not in user_visible_path else donothing for i in get_neighbors((x_move, y_move), rows, cols)]
+            astar_path.append((x_move, y_move))
+
+            for row in range(len(maze)):
+                row_arr = []
+                for col in range(len(maze[0])):
+                    if (row, col) == (end_x, end_y) and (x_move, y_move) != (end_x, end_y):
+                        row_arr.append('G')
+                    elif (row, col) == (x_move, y_move):
+                        row_arr.append('★')
+                    elif (row, col) in user_visible_path:
+                        row_arr.append(maze[row][col])
+                    elif row == 0 or row == rows - 1:
+                        row_arr.append('─')
+                    elif (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
+                        row_arr.append('|')
+                    else:
+                        row_arr.append(' ')
+                Label(fTable, text="  ".join(map(str,row_arr)), font=("Liberation Mono", "10"), borderwidth=1).grid(pady=2, row=r, column=1)
+                r += 1
+            user_total_move_label.config(text="Total Moves: " + str(len(astar_path)))
+            #text_str.set(f"Total Moves: {len(astar_path)}")
+            updateScrollRegion()
+            if (x_move, y_move) == (end_x, end_y):
+                print("Goal Reached!")
+                
+                # RESET MAZE HERE
+        else:
+            print(f"Invalid new position {x_move}, {y_move}")
+            messagebox.showerror('???', 'Error: Invalid Coordinate!')
+            user_move_x.delete(0, END)
+            user_move_y.delete(0, END)
+            user_move_x.insert(0, "Ex: 2")
+            user_move_y.insert(0, "Ex: 2")
     
 
 # Adding/Removing example text in entry boxes
@@ -276,6 +405,19 @@ def add_end_two_text():
     if end_coord_two.get() == "":
         end_coord_two.insert(0, "Ex: 8")
 
+def remove_user_move_x():
+    if user_move_x.get() != "":
+        user_move_x.delete(0, END)
+def remove_user_move_y():
+    if user_move_y.get() != "":
+        user_move_y.delete(0, END)
+def add_user_move_x():
+    if user_move_x.get() == "":
+        user_move_x.insert(0, "Ex: 2")
+def add_user_move_y():
+    if user_move_y.get() == "":
+        user_move_y.insert(0, "Ex: 2")
+
 
 # Create text boxes
 num_of_rows = Entry(fTable, width=12)
@@ -302,6 +444,13 @@ end_coord_two = Entry(fTable, width=5)
 end_coord_two.grid(row=4, column=1, padx=20, sticky=E)
 end_coord_two.insert(0, "Ex: 8")
 
+user_move_x = Entry(fTable, width=5)
+user_move_x.grid(row=5, column=1, padx=20, sticky=W)
+user_move_x.insert(0, "Ex: 2")
+user_move_y = Entry(fTable, width = 5)
+user_move_y.grid(row=5, column=1, padx=20, sticky=E)
+user_move_y.insert(0, "Ex: 2")
+
 # Create text box labels
 rows_label = Label(fTable, text="Number of Rows:").grid(row=0, column=0, padx=20, pady=5)
 cols_label = Label(fTable, text="Number of Columns:").grid(row=1, column=0, padx=20)
@@ -312,13 +461,25 @@ open_parenth_label = Label(fTable, text="(").grid(row=3, column=0, sticky=E)
 comma_label = Label(fTable, text=",").grid(row=3, column=1, padx=20, sticky=S)
 close_parenth_label = Label(fTable, text=")").grid(row=3, column=2, sticky=W)
 
-end_label = Label(fTable, text="End Coordinate:").grid(row=4, column=0, padx=20, pady=5)
+end_label = Label(fTable, text="End Coordinate:").grid(row=4, column=0, padx=20)
 open_parenth_label = Label(fTable, text="(").grid(row=4, column=0, sticky=E)
 comma_label = Label(fTable, text=",").grid(row=4, column=1, padx=20, sticky=S)
 close_parenth_label = Label(fTable, text=")").grid(row=4, column=2, sticky=W)
 
+user_move_label = Label(fTable, text="Enter coordinates to move to: ").grid(row=5, column=0, padx=20, pady=5)
+open_parenth_label = Label(fTable, text="(").grid(row=5, column=0, sticky=E)
+comma_label = Label(fTable, text=",").grid(row=5, column=1, padx=20, sticky=S)
+close_parenth_label = Label(fTable, text=")").grid(row=5, column=2, sticky=W)
+
+user_total_move_label = Label(fTable, text='Total Moves:')
+user_total_move_label.grid(row=2, column=3, padx=20, pady=10)
+
 # Create buttons for creating the maze and clearing everything
-pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=10, pady=1).grid(row=4, column=3, padx=20, pady=10)
+pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=10, pady=1)
+pass_arguments.grid(row=4, column=3, padx=20, pady=10)
+
+user_input_steps = Button(fTable, text="Solve the maze yourself!", command=user_input_maze, width=20, padx=3, pady=1, state=DISABLED)
+user_input_steps.grid(row=5, column=3, pady=5, padx=20)
 
 back_button = Button(fTable, text="Generate Previous Step", command=back, width=18, padx=5, pady=1, state=DISABLED)
 back_button.grid(row=6, column=0, pady=10)
@@ -351,6 +512,11 @@ end_coord.bind("<FocusIn>", lambda event:remove_end_text())
 end_coord.bind("<FocusOut>", lambda event:add_end_text())
 end_coord_two.bind("<FocusIn>", lambda event:remove_end_two_text())
 end_coord_two.bind("<FocusOut>", lambda event:add_end_two_text())
+
+user_move_x.bind("<FocusIn>", lambda event:remove_user_move_x())
+user_move_x.bind("<FocusOut>", lambda event:add_user_move_x())
+user_move_y.bind("<FocusIn>", lambda event:remove_user_move_y())
+user_move_y.bind("<FocusOut>", lambda event:add_user_move_y())
 
 # If user clicks on an empty space, the insert cursor will disappear from the entry box
 root.bind("<1>", lambda event: event.widget.focus_set())
