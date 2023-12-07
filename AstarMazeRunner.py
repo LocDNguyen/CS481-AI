@@ -167,9 +167,8 @@ def step_display():
     
         if goal not in astar_path:
             Label(fTable, text="No valid path found.").grid(row=8, column=1)
-            
-    
-        Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
+        else:
+            Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
 
     r=9 # need to redeclare since r is created in the firstrun section
 
@@ -213,7 +212,6 @@ def back():
     step_maze = maze[:]
     for i in range(len(astar_path)):
         step_maze[astar_path[i][0]][astar_path[i][1]] = " "
-    #step_maze[astar_path[0][0]][astar_path[0][1]] = '0'
 
     astar_path.insert(0, astar_travelled_path.pop(-1))
 
@@ -222,6 +220,7 @@ def back():
         r += 1
         updateScrollRegion()
 
+    # debug
     print("Viewed from P:")
     print(astar_travelled_path)
     print("To be viewed P:")
@@ -233,7 +232,7 @@ def back():
         generate_steps.config(state=NORMAL)
     
 
-
+# Adding/Removing example text in entry boxes
 def remove_row_text():
     if num_of_rows.get() != "":
         num_of_rows.delete(0, END)

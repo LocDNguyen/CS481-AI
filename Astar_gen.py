@@ -3,6 +3,7 @@ import random
 
 
 
+
 def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
     maze = [[" "] * cols for _ in range(rows)]
     for row in range(rows):
@@ -135,46 +136,11 @@ def astar_pathfind_gen(maze, start, goal):
                 
                 
 
-        
-        
-            
-    # print("\nNo valid path found.")
     return None  # No path found
 
 
-# maze_dim_x = 10
-# maze_dim_y = 20
-# wall_prob = .2
-
-# maze = generate_maze(maze_dim_x, maze_dim_y, wall_prob)
-# print("Initial maze: ")
-# print_maze(maze)
-
-# #create generator
-# start_cord = (4,1)
-# end_cord = (8,15)
-# astar_pgen = astar_pathfind_gen(maze, start_cord, end_cord)
-# #path taken by A*
-# astar_path = []
-# for node in astar_pgen:
-#     #print(node, end=", ")
-#     astar_path.append(node)
-# print()
-
-# #iterare through path, display path with letter (starting at 'A')
-# for i in range(len(astar_path)):
-#     # x='A'
-#     # val=chr(ord(x) + i)
-#     maze[astar_path[i][0]][astar_path[i][1]] = '+'
-
-# print("A is the start position, " + chr(ord('A') + len(astar_path) - 1) + " is the goal position")
-# print_maze(maze)
 
 def start(rows, cols, wall_probability, start_x, start_y, end_x, end_y):
-
-    #rows, cols = 20, 20
-    #wall_probability = .3
-
     maze = generate_maze(rows, cols, wall_probability, start_x, start_y, end_x, end_y)
     print("Generated Maze:")
     print_maze(maze)
