@@ -269,7 +269,7 @@ def user_input_maze():
                 elif (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
                     row_arr.append('|')
                 else:
-                    row_arr.append(' ')
+                    row_arr.append('?')
             Label(fTable, text="  ".join(map(str,row_arr)), font=("Liberation Mono", "10"), borderwidth=1).grid(pady=2, row=r, column=1)
             r += 1
         
@@ -311,7 +311,7 @@ def user_input_maze():
                     elif (col == 0 or col == cols - 1) and row != 0 and row != rows - 1:
                         row_arr.append('|')
                     else:
-                        row_arr.append(' ')
+                        row_arr.append('?')
                 Label(fTable, text="  ".join(map(str,row_arr)), font=("Liberation Mono", "10"), borderwidth=1).grid(pady=2, row=r, column=1)
                 r += 1
             user_total_move_label.config(text="Total Moves: " + str(len(astar_path)))
