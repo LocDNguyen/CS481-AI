@@ -443,17 +443,17 @@ def remove_user_move_x():
     if user_move_x.get() != "":
         user_move_x.delete(0, END)
 
-def remove_user_move_x():
+def remove_user_move_y():
     if user_move_y.get() != "":
         user_move_y.delete(0, END)
 
 def add_user_move_x():
     if user_move_x.get() == "":
-        user_move_x.insert(0, "Ex: 1")
+        user_move_x.insert(0, "Ex: 2")
 
-def add_user_move_x():
-    if user_move_x.get() == "":
-        user_move_x.insert(0, "Ex: 1")
+def add_user_move_y():
+    if user_move_y.get() == "":
+        user_move_y.insert(0, "Ex: 2")
 
 
 # Create text boxes
@@ -474,19 +474,19 @@ start_coord_two = Entry(fTable, width=5)
 start_coord_two.grid(row=3, column=1, padx=20, sticky=E)
 start_coord_two.insert(0, "Ex: 1")
 
-user_move_x = Entry(fTable, width=12)
-user_move_x.insert(0, "Ex: 2")
-user_move_x.grid(row=5, column=2, padx=20, sticky=W)
-user_move_y = Entry(fTable, width = 12)
-user_move_y.insert(0, "Ex: 2")
-user_move_y.grid(row=6, column=2, sticky=W)
-
 end_coord = Entry(fTable, width=5)
 end_coord.grid(row=4, column=1, padx=20, sticky=W)
 end_coord.insert(0, "Ex: 8")
 end_coord_two = Entry(fTable, width=5)
 end_coord_two.grid(row=4, column=1, padx=20, sticky=E)
 end_coord_two.insert(0, "Ex: 8")
+
+user_move_x = Entry(fTable, width=5)
+user_move_x.insert(0, "Ex: 2")
+user_move_x.grid(row=5, column=1, padx=20, sticky=W)
+user_move_y = Entry(fTable, width = 5)
+user_move_y.insert(0, "Ex: 2")
+user_move_y.grid(row=5, column=1, padx=20, sticky=E)
 
 # Create text box labels
 rows_label = Label(fTable, text="Number of Rows:").grid(row=0, column=0, padx=20, pady=5)
@@ -503,7 +503,10 @@ open_parenth_label = Label(fTable, text="(").grid(row=4, column=0, sticky=E)
 comma_label = Label(fTable, text=",").grid(row=4, column=1, padx=20, sticky=S)
 close_parenth_label = Label(fTable, text=")").grid(row=4, column=2, sticky=W)
 
-user_move_label = Label(fTable, text="Enter coordinates to move to: ").grid(row=3, column=2, padx=20, pady=10)
+user_move_label = Label(fTable, text="Enter coordinates to move to: ").grid(row=5, column=0, padx=20, pady=10)
+open_parenth_label = Label(fTable, text="(").grid(row=5, column=0, sticky=E)
+comma_label = Label(fTable, text=",").grid(row=5, column=1, padx=20, sticky=S)
+close_parenth_label = Label(fTable, text=")").grid(row=5, column=2, sticky=W)
 
 user_total_move_label = Label(fTable, text=text_str).grid(row=2, column=2, padx=20, pady=10)
 text_str.set("Total Moves: ")
@@ -519,7 +522,7 @@ generate_steps.grid(row=6, column=0, pady=10)
 back_button = Button(fTable, text="Generate Previous Step", command=back, width=18, padx=5, pady=1, state=DISABLED)
 back_button.grid(row=6, column=1, pady=10)
 
-user_input_steps = Button(fTable, text="Solve the maze yourself!", command=user_input_maze, width=18, padx=3, pady=1).grid(row=7, column=2, pady=10)
+user_input_steps = Button(fTable, text="Solve the maze yourself!", command=user_input_maze, width=20, padx=3, pady=1).grid(row=5, column=3, pady=10)
 
 # Allow keyboard keys to activate buttons
 # root.bind('<Return>', lambda event:step_display())
@@ -542,10 +545,10 @@ end_coord.bind("<FocusOut>", lambda event:add_end_text())
 end_coord_two.bind("<FocusIn>", lambda event:remove_end_two_text())
 end_coord_two.bind("<FocusOut>", lambda event:add_end_two_text())
 
-user_move_x.bind("<FocusIn>", lambda event:remove_end_two_text())
-user_move_x.bind("<FocusOut>", lambda event:add_end_two_text())
-user_move_y.bind("<FocusIn>", lambda event:remove_end_two_text())
-user_move_y.bind("<FocusOut>", lambda event:add_end_two_text())
+user_move_x.bind("<FocusIn>", lambda event:remove_user_move_x())
+user_move_x.bind("<FocusOut>", lambda event:add_user_move_x())
+user_move_y.bind("<FocusIn>", lambda event:remove_user_move_y())
+user_move_y.bind("<FocusOut>", lambda event:add_user_move_y())
 
 # If user clicks on an empty space, the insert cursor will disappear from the entry box
 root.bind("<1>", lambda event: event.widget.focus_set())
