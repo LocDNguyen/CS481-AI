@@ -11,15 +11,10 @@ import copy
 
 saved_path_generator = None
 first_run = True
-<<<<<<< HEAD
 first_run_input = True
 path = None
 astar_travelled_path = None
 astar_path = None
-=======
-path = None
-astar_travelled_path = None
->>>>>>> main
 global rows
 global cols
 global wall
@@ -28,12 +23,9 @@ global start_y
 global end_x
 global end_y
 global maze
-<<<<<<< HEAD
 global user_maze
 
 text_str = StringVar()
-=======
->>>>>>> main
 
 root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
@@ -51,10 +43,7 @@ def enter():
     global end_y
     global first_run
     global maze
-<<<<<<< HEAD
     global user_maze
-=======
->>>>>>> main
     for label in fTable.grid_slaves():
         if int(label.grid_info()["row"]) > 7:
             label.grid_forget()
@@ -88,16 +77,10 @@ def enter():
 
     # code similar to begin()
     maze = start(rows, cols, wall, start_x, start_y, end_x, end_y)
-<<<<<<< HEAD
     user_maze = copy.deepcopy(maze)
     Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in maze:
         Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
-=======
-    Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
-    for row in maze:
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, column=0)
->>>>>>> main
         updateScrollRegion()
     final = finish(maze, start_x, start_y, end_x, end_y)
     if final == None:
@@ -106,10 +89,7 @@ def enter():
         Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
         show_complete_maze.config(state=NORMAL)
         generate_steps.config(state=NORMAL)
-<<<<<<< HEAD
         user_input_steps.config(state=NORMAL)
-=======
->>>>>>> main
     print_maze(maze)
         
 
@@ -123,11 +103,7 @@ def instant():
     final = finish(maze, start_x, start_y, end_x, end_y)
     r = 9
     for row in final:
-<<<<<<< HEAD
         Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
-=======
-        Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
->>>>>>> main
         r += 1
         updateScrollRegion()
     
@@ -151,10 +127,7 @@ def clear():
     back_button.config(state=DISABLED)
     generate_steps.config(state=DISABLED)
     show_complete_maze.config(state=DISABLED)
-<<<<<<< HEAD
     user_input_steps.config(state=DISABLED)
-=======
->>>>>>> main
     
     # reset the step variables
     global saved_path_generator 
@@ -175,16 +148,11 @@ def clear():
     start_coord_two.insert(0, "Ex: 1")
     end_coord.insert(0, "Ex: 8")
     end_coord_two.insert(0, "Ex: 8")
-<<<<<<< HEAD
     user_move_x.insert(0, "Ex: 2")
     user_move_y.insert(0, "Ex: 2")
 
 
 
-=======
-
-
->>>>>>> main
 def step_display():
     #only run this code on the first run: it creates the maze, error checks, and saves information to global variables 
     global first_run
@@ -207,34 +175,8 @@ def step_display():
         for node in saved_path_generator:
             #print(node, end=", ")
             path.append(node)
-<<<<<<< HEAD
 
     r=9 # need to redeclare since r is created in the firstrun section
-=======
-
-        #Label(fTable, text="Shortest Path:").grid(pady=2, row=8, column=1)
-        # r = 9
-        # for row in maze:
-        #     Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
-        #     r += 1
-        #     updateScrollRegion()
-
-    r=9 # need to redeclare since r is created in the firstrun section
-    # for label in fTable.grid_slaves():
-    #     if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
-    #         label.grid_forget()
-            
-
-    # build path
-    # if len(astar_path) == 0:
-    #     print('ere')
-    #     astar_path = astar_travelled_path
-    #     astar_travelled_path = []
-    #     for i in range(len(astar_travelled_path)):
-    #         step_maze[astar_travelled_path[i][0]][astar_travelled_path[i][1]] = " "
-    #     # debug
-    #     print_maze(maze)
->>>>>>> main
 
     step_maze = maze[:]    # PROBLEM: Maze is getting updated with * characters, is not getting reset
     for i in range(len(astar_travelled_path)):
@@ -502,15 +444,11 @@ user_total_move_label = Label(fTable, text='Total Moves:')
 user_total_move_label.grid(row=2, column=3, padx=20, pady=10)
 
 # Create buttons for creating the maze and clearing everything
-<<<<<<< HEAD
 pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=10, pady=1)
 pass_arguments.grid(row=4, column=3, padx=20, pady=10)
 
 user_input_steps = Button(fTable, text="Solve the maze yourself!", command=user_input_maze, width=20, padx=3, pady=1, state=DISABLED)
 user_input_steps.grid(row=5, column=3, pady=5, padx=20)
-=======
-pass_arguments = Button(fTable, text="Enter", command=enter, width=10, padx=10, pady=1).grid(row=4, column=3, padx=20, pady=10)
->>>>>>> main
 
 back_button = Button(fTable, text="Generate Previous Step", command=back, width=18, padx=5, pady=1, state=DISABLED)
 back_button.grid(row=6, column=0, pady=10)

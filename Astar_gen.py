@@ -171,8 +171,4 @@ def finish(new_maze, start_x, start_y, end_x, end_y):
         temp[astar_path[i][0]][astar_path[i][1]] = val
 
     # print("A is the start position, " + chr(ord('A') + len(astar_path) - 1) + " is the goal position")
-<<<<<<< HEAD
     return temp
-=======
-    return temp
->>>>>>> main
