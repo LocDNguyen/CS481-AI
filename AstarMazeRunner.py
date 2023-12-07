@@ -20,7 +20,6 @@ global start_y
 global end_x
 global end_y
 global maze
-global temp
 
 root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
@@ -140,17 +139,15 @@ def clear():
 def step_display():
     #only run this code on the first run: it creates the maze, error checks, and saves information to global variables 
     global first_run
-    global temp
     if first_run:
         for label in fTable.grid_slaves():
             if int(label.grid_info()["row"]) > 8 and int(label.grid_info()["column"]) > 0:
                 label.grid_forget()
 
-        temp = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
         start = (start_x, start_y)
         goal = (end_x, end_y)
         global saved_path_generator
-        saved_path_generator = astar_pathfind_gen(temp, start, goal)
+        saved_path_generator = astar_pathfind_gen(maze, start, goal)
         global path
         path = []
         
@@ -193,7 +190,7 @@ def step_display():
     astar_travelled_path.append(path.pop(0))
 
 
-    for row in maze:
+    for row in step_maze:
         Label(fTable, text=" ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
