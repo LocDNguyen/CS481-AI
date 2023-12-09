@@ -1,7 +1,3 @@
-# USES Astar_gen FILE #
-# USES Astar_gen FILE #
-# USES Astar_gen FILE #
-
 import ast
 from tkinter import *
 from tkinter import messagebox
@@ -25,14 +21,15 @@ global end_y
 global maze
 global user_maze
 
-text_str = StringVar()
-
+# Window Dimensions and Icon Settings
 root.title("A* Maze Runner")
 # Image from https://wildfiremotionpictures.com/2014/10/08/film-review-the-maze-runner-2014/
 image = PhotoImage(file='maze.png')
 root.iconphoto(False, image)
 root.geometry("550x500+200+100")
 
+
+# Captures user inputs
 def enter():
     global rows
     global cols
@@ -90,11 +87,10 @@ def enter():
         show_complete_maze.config(state=NORMAL)
         generate_steps.config(state=NORMAL)
         user_input_steps.config(state=NORMAL)
-    print_maze(maze)
         
 
             
-
+# Creates and displays solved maze
 def instant():
     # Display A* maze
     for label in fTable.grid_slaves():
@@ -108,7 +104,7 @@ def instant():
         updateScrollRegion()
     
 
-
+# Removes any maze visuals and clears user inputs
 def clear():
     num_of_rows.delete(0, END)
     num_of_cols.delete(0, END)
@@ -129,6 +125,8 @@ def clear():
     show_complete_maze.config(state=DISABLED)
     user_input_steps.config(state=DISABLED)
     
+    user_total_move_label.config(text="Total Moves:")
+
     # reset the step variables
     global saved_path_generator 
     saved_path_generator= None
@@ -152,7 +150,7 @@ def clear():
     user_move_y.insert(0, "Ex: 2")
 
 
-
+# Used to generate the next step of maze solution
 def step_display():
     #only run this code on the first run: it creates the maze, error checks, and saves information to global variables 
     global first_run
@@ -185,24 +183,18 @@ def step_display():
 
     astar_travelled_path.append(path.pop(0))
 
-
     for row in step_maze:
         Label(fTable, text="  ".join(map(str,row)), borderwidth=1, font=("Liberation Mono", "10")).grid(pady=2, row=r, column=1)
         r += 1
         updateScrollRegion()
-
-    # debug
-    print("Viewed from N:")
-    print(astar_travelled_path)
-    print("To be viewed N:")
-    print(path)
-
 
     if not path:
         generate_steps.config(state=DISABLED)
     else:
         back_button.config(state=NORMAL)
 
+
+# Used to generate the previous step of maze solution
 def back():
     r = 9
     step_maze = maze[:]
@@ -216,17 +208,13 @@ def back():
         r += 1
         updateScrollRegion()
 
-    # debug
-    print("Viewed from P:")
-    print(astar_travelled_path)
-    print("To be viewed P:")
-    print(path)
-
     if not astar_travelled_path:
         back_button.config(state=DISABLED)
     else:
         generate_steps.config(state=NORMAL)
 
+
+# Allows user to manually move around the maze in order to get to the goal
 def user_input_maze():
     global rows
     global cols
@@ -373,7 +361,6 @@ def add_end_text():
 def add_end_two_text():
     if end_coord_two.get() == "":
         end_coord_two.insert(0, "Ex: 8")
-
 def remove_user_move_x():
     if user_move_x.get() != "":
         user_move_x.delete(0, END)
