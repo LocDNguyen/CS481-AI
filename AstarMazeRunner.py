@@ -76,7 +76,7 @@ def enter():
         return
 
     # code similar to begin()
-    maze = start(rows, cols, wall, start_x, start_y, end_x, end_y)
+    maze = generate_maze(rows, cols, wall, start_x, start_y, end_x, end_y)
     user_maze = copy.deepcopy(maze)
     Label(fTable, text="Initial Maze:").grid(pady=2, column=0, row=8)
     for row in maze:

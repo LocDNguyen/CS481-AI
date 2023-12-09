@@ -16,6 +16,8 @@ def generate_maze(rows, cols, wall_prob, start_x, start_y, end_x, end_y):
                 maze[row][col] = '■'    # ■ Represents obstacles
     maze[start_x][start_y] = " "
     maze[end_x][end_y] = " "
+    print("Generated Maze:")
+    print_maze(maze)
     return maze
 
 def print_maze(maze):
@@ -138,14 +140,6 @@ def astar_pathfind_gen(maze, start, goal):
 
     return None  # No path found
 
-
-
-def start(rows, cols, wall_probability, start_x, start_y, end_x, end_y):
-    init = generate_maze(rows, cols, wall_probability, start_x, start_y, end_x, end_y)
-    print("Generated Maze:")
-    print_maze(init)
-
-    return init
 
 def finish(new_maze, start_x, start_y, end_x, end_y):
     start = (start_x, start_y)
